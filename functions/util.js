@@ -3,7 +3,8 @@ const admin = require("firebase-admin");
 const axios = require('axios');
 
 // 2. Fill in your CHANNEL ACCESS TOKEN
-const CHANNEL_ACCESS_TOKEN = "uu41kxz12H8Aw7zExmjvoIHzaqKHdPYwOuIoPyFuFM5GwiQRu0hjVvP0qQKGPTQRgRiYpe3OTb9QO1kwSX7nyB2J6fPrdorPEcpK/IVg7iqgkAT2aL9EdtNsY8Z5VOFpbPifWiSiOyBHejtu21G/RAdB04t89/1O/w1cDnyilFU=";
+const CHANNEL_ACCESS_TOKEN = "Apu+1LfQZvpVf6ysw74kc3S20jQBRSKFqZSIYauFqvGgO1VPP8kv0EGgq+0Ffb6wXuMw7ShgwLLl+39DvUVh1LNfcX5o585dlLvzd3/f4fdFgOA++eFjx3n3goilKQ5tzWrtdFicTDZp9FLtPx4RtgdB04t89/1O/w1cDnyilFU=";
+// const CHANNEL_ACCESS_TOKEN = "uu41kxz12H8Aw7zExmjvoIHzaqKHdPYwOuIoPyFuFM5GwiQRu0hjVvP0qQKGPTQRgRiYpe3OTb9QO1kwSX7nyB2J6fPrdorPEcpK/IVg7iqgkAT2aL9EdtNsY8Z5VOFpbPifWiSiOyBHejtu21G/RAdB04t89/1O/w1cDnyilFU=";
 
 const LINE_MESSAGING_API = "https://api.line.me/v2/bot";
 const LINE_HEADER = {
@@ -61,7 +62,7 @@ class Utils {
   }
 
   async addBeaconUser(profile) {
-    const userRef = admin.firestore().collection('beacons').doc(`${profile.userId}`);
+    const userRef = admin.firestore().collection('mice').doc(`${profile.userId}`);
     try {
       const doc = await userRef.get();
       if (!doc.exists) {

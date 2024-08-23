@@ -1,49 +1,66 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover"
+    />
+    <title>Avatar Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="beacon.css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
-  <title>Avatar Dashboard</title>
-  <link rel="stylesheet" type="text/css" href="beacon.css">
-</head>
+  <body>
+    <div id="main">
+      <!-- <img src="qrcode.png" style="position: absolute; top: calc(50% - 100px); left: calc(50% - 100px); opacity: 0.6; border-radius: 20px;" width="200" /> -->
+    </div>
 
-<body>
-  <div id='main'>
-    <img src="qrcode.png" style="position: absolute; top: calc(50% - 100px); left: calc(50% - 100px); opacity: 0.6; border-radius: 20px;" width="200" />
-  </div>
+    <script src="/__/firebase/8.10.1/firebase-app.js"></script>
+    <script src="/__/firebase/8.10.1/firebase-firestore.js"></script>
+    <script src="/__/firebase/init.js?useEmulator=true"></script>
 
-  <script src="/__/firebase/8.10.1/firebase-app.js"></script>
-  <script src="/__/firebase/8.10.1/firebase-firestore.js"></script>
-  <script src="/__/firebase/init.js?useEmulator=true"></script>
-  
-  <script>
-    function getRandomInt(max) {
-      return Math.floor(Math.random() * max);
-    }
+    <script>
+      function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+      }
 
-    const db = firebase.firestore();
-    const mainDiv = document.querySelector("#main");
-    async function main() {
-      let i = 1
-      db.collection("beacons").orderBy('displayName').limit(100).onSnapshot((snapshot) => {
-        snapshot.docChanges().forEach((change) => {
-          if (change.type === "added") {
-            const attendees = JSON.parse(localStorage.getItem('attendees'));
+      const db = firebase.firestore();
+      const mainDiv = document.querySelector("#main");
+      async function main() {
+        let i = 1;
+        db.collection("mice")
+          .orderBy("displayName")
+          .limit(100)
+          .onSnapshot((snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+              if (change.type === "added") {
+                const localData = localStorage.getItem("attendees");
 
-            const data = JSON.stringify([...attendees, change.doc.data()]);
-            localStorage.setItem('attendees', data)
-            const number = getRandomInt(20);
-            mainDiv.insertAdjacentHTML('beforeend', `<div class='bubble bubble-${number}'></div>`);
-            const bubble = document.querySelector(`.bubble-${number}`);
-            bubble.style.backgroundImage = `url("${change.doc.data().pictureUrl}")`;
-            i++
-          }
-        });
-      });
-    }
-    main()
-  </script>
-</body>
+                if (localData) {
+                  const attendees = JSON.parse(localData);
 
+                  const data = JSON.stringify([
+                    ...attendees,
+                    change.doc.data(),
+                  ]);
+                  localStorage.setItem("attendees", data);
+                  const number = getRandomInt(20);
+                  mainDiv.insertAdjacentHTML(
+                    "beforeend",
+                    `<div class='bubble bubble-${number}'></div>`
+                  );
+                  const bubble = document.querySelector(`.bubble-${number}`);
+                  bubble.style.backgroundImage = `url("${
+                    change.doc.data().pictureUrl
+                  }")`;
+                }
+
+                i++;
+              }
+            });
+          });
+      }
+      main();
+    </script>
+  </body>
 </html>
